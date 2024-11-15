@@ -123,7 +123,7 @@ function changeBackground(condition) {
             backgroundImage = 'url(https://wallpapers-clan.com/wp-content/uploads/2024/08/man-dark-city-in-the-rain-gif-desktop-wallpaper-preview.gif)';
             break;
         case 'clouds':
-            backgroundImage = 'url(https://media1.giphy.com/media/yLrLQPkyz7dLYshVhO/200.gif?cid=6c09b952hus3aipp0hplnqruj7fy9p6bbcyjyjfstka7c0nj&ep=v1_internal_gif_by_id&rid=200.gif&ct=g)';
+            backgroundImage = 'url(https://i.makeagif.com/media/8-26-2023/cjaI99.gif)';
             break;
         case 'snow':
             backgroundImage = 'url(https://i.pinimg.com/originals/a2/e7/0e/a2e70ee9920b35d55f9fc6d4b5af21aa.gif)';
