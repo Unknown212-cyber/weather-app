@@ -1,43 +1,40 @@
 const apiKey = '4ff547d0e0204170c4b48ea3818faefa';
 
+let map; // Declare the map variable globally
+
 $(document).ready(function () {
-    console.log('jQuery and script.js are working!');
-
-    // Event listener for the search button
-    $('#searchBtn').click(function () {
-        const city = $('#cityInput').val();
-        if (city) {
-            getWeather(city);
-            getForecast(city);
-        } else {
-            alert('Please enter a city name');
-        }
-    });
-
-    // Toggle between Celsius and Fahrenheit
-    $('#toggleTemp').click(function () {
-        const currentUnit = $('#toggleTemp').text();
-        const city = $('#cityInput').val();
-        if (city) {
-            if (currentUnit === 'Show in °F') {
-                $('#toggleTemp').text('Show in °C');
-                getWeather(city, 'imperial');
-                getForecast(city, 'imperial');
-            } else {
-                $('#toggleTemp').text('Show in °F');
-                getWeather(city, 'metric');
-                getForecast(city, 'metric');
-            }
-        }
-    });
+    // Initialize the map if it doesn't exist
+    initializeMap();
 });
 
-// Function to fetch current weather data
-function getWeather(city, units = 'metric') {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
+// Function to initialize the map
+function initializeMap() {
+    if (!map) { // Check if the map is already initialized
+        map = L.map('map').setView([20, 0], 2); // Center at [latitude, longitude] and zoom level 2
 
+        // Add a tile layer to the map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Event listener for map clicks
+        map.on('click', function (e) {
+            const { lat, lng } = e.latlng;
+            fetchWeather(lat, lng); // Fetch weather data for the clicked location
+        });
+    } else {
+        console.warn('Map is already initialized.');
+    }
+}
+
+// Function to fetch weather data by coordinates
+function fetchWeather(lat, lng) {
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${apiKey}&units=metric`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=${apiKey}&units=metric`;
+
+    // Fetch current weather
     $.ajax({
-        url: apiUrl,
+        url: weatherUrl,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -45,17 +42,13 @@ function getWeather(city, units = 'metric') {
             changeBackground(data.weather[0].main);
         },
         error: function () {
-            alert('City not found. Please try again.');
+            alert('Unable to fetch weather data.');
         }
     });
-}
 
-// Function to fetch 5-day weather forecast
-function getForecast(city, units = 'metric') {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${units}`;
-
+    // Fetch 5-day forecast
     $.ajax({
-        url: apiUrl,
+        url: forecastUrl,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
