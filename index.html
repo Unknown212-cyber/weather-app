@@ -12,11 +12,13 @@
 <body>
     <div class="weather-container">
         <h1>Weather App</h1>
-        <input type="text" id="cityInput" placeholder="Enter city name">
-        <button id="searchBtn">Search</button>
-        <button id="toggleTemp">Show in °F</button>
+        <h3>Click on a Location on the Map to View Its Current Weather Details</h3>
+        <div id="map"></div>
         <div id="weatherResult"></div>
         <div id="forecast"></div>
     </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="script.js"></script>
 </body>
 </html>
